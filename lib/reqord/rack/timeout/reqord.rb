@@ -1,9 +1,7 @@
 module Reqord
-  class Rack::Timeout
-    if defined?(Rails) && [3,4,5,6].include?(Rails::VERSION::MAJOR)
-      class Rack::Timeout::Railtie < Rails::Railtie
-        initializer('rack-timeout-reqord.prepend') { |app| app.config.middleware.insert_before(Rack::Timeout, Rack::Timeout::Reqord) }
-      end
+  if defined?(Rails) && defined?(Rack::Timeout) && [3,4,5,6].include?(Rails::VERSION::MAJOR)
+    class Rack::Timeout::Railtie < Rails::Railtie
+      initializer('rack-timeout-reqord.prepend') { |app| app.config.middleware.insert_before(Rack::Timeout, Rack::Timeout::Reqord) }
     end
 
     class Rack::Timeout::Reqord
@@ -16,7 +14,9 @@ module Reqord
       def call(env)
         @app.call(env)
       rescue Rack::Timeout::Error => e
-        # Save error, but then re-raise it
+        # Reqord error, but then re-raise it
+        @reqord['status'] = 503
+        pp @reqord
 
         raise
       end

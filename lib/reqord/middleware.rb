@@ -1,3 +1,7 @@
 module Reqord
-  VERSION = "0.1.0"
+  class Railtie < Rails::Railtie
+    initializer "reqord.configure_rails_initialization" do
+      Rails.application.middleware.use Reqord
+    end
+  end
 end

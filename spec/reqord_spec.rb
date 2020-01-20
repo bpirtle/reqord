@@ -3,7 +3,7 @@ RSpec.describe Reqord do
     expect(Reqord::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "insert middleware" do
+    expect(Reqord::Middleware.insert_middleware).to eq(true)
   end
 end
