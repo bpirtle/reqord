@@ -1,4 +1,4 @@
-module Reqord
+module Reqord #v1
   if defined?(Rails) && defined?(Rack::Timeout) && [3,4,5,6].include?(Rails::VERSION::MAJOR)
     class Rack::Timeout::Railtie < Rails::Railtie
       initializer('rack-timeout-reqord.prepend') { |app| app.config.middleware.insert_before(Rack::Timeout, Rack::Timeout::Reqord) }
